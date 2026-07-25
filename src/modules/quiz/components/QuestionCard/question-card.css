@@ -1,0 +1,28 @@
+.question-card {
+  padding: 1.4rem;
+}
+
+.question-card__meta {
+  color: var(--ink-soft);
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.question-card h2 {
+  margin: 0 0 1rem;
+  font-size: clamp(1.1rem, 2.4vw, 1.45rem);
+  line-height: 1.45;
+}
+
+.question-card__image {
+  width: min(100%, 420px);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  border: 1px solid var(--line);
+}
+
+.question-card__answers {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}

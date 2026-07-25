@@ -1,0 +1,14 @@
+.quiz-timer {
+  font-weight: 800;
+  font-size: 1.2rem;
+  letter-spacing: 0.04em;
+  padding: 0.45rem 0.85rem;
+  border-radius: 999px;
+  background: rgba(15, 107, 92, 0.12);
+  color: var(--accent-strong);
+}
+
+.quiz-timer.is-danger {
+  background: var(--fail-bg);
+  color: var(--fail);
+}

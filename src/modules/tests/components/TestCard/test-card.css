@@ -1,0 +1,47 @@
+.test-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  padding: 1rem;
+  border-radius: 16px;
+  background: #fffdf8;
+  border: 2px solid var(--idle);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  min-height: 130px;
+}
+
+.test-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow);
+}
+
+.test-card--pass {
+  border-color: var(--pass);
+  background: linear-gradient(180deg, #f3fff8, #fffdf8);
+}
+
+.test-card--fail {
+  border-color: var(--fail);
+  background: linear-gradient(180deg, #fff5f4, #fffdf8);
+}
+
+.test-card--idle {
+  border-color: #b7beb9;
+}
+
+.test-card__top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.test-card__num {
+  font-weight: 800;
+  color: var(--accent);
+}
+
+.test-card strong {
+  font-size: 1.05rem;
+}

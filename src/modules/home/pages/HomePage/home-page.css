@@ -1,0 +1,43 @@
+.home-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.home-page__hero {
+  padding: 2rem;
+}
+
+.home-page__eyebrow {
+  margin: 0;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--warm);
+  font-size: 0.82rem;
+}
+
+.home-page__hero h1 {
+  margin: 0.35rem 0 0.7rem;
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  letter-spacing: -0.04em;
+  max-width: 12ch;
+}
+
+.home-page__actions {
+  margin-top: 1.4rem;
+}
+
+.home-page__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+}
+
+.home-page__cards .panel {
+  padding: 1.25rem;
+}
+
+.home-page__cards h3 {
+  margin: 0 0 0.45rem;
+}

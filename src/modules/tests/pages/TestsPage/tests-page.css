@@ -1,0 +1,13 @@
+.tests-page h1 {
+  margin: 0;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  letter-spacing: -0.03em;
+}
+
+.tests-page__head {
+  justify-content: space-between;
+}
+
+.tests-page__pager {
+  justify-content: center;
+}
