@@ -32,7 +32,7 @@ jobs:
 
       - name: Build
         env:
-          VITE_BASE_PATH: /abto-dproc/
+          VITE_BASE_PATH: /
           VITE_API_URL: https://avto-dproc-be.vercel.app
         run: npm run build
 

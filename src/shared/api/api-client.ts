@@ -23,5 +23,11 @@ export async function apiPost<T>(path: string, body: unknown): Promise<T> {
 export function assetUrl(path?: string | null): string | null {
   if (!path) return null;
   if (path.startsWith('http')) return path;
+  // Images live in frontend `public/uploads` (GitHub Pages / Vite),
+  // not on the Vercel serverless backend filesystem.
+  if (path.startsWith('/uploads/')) {
+    const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+    return `${base}${path}`;
+  }
   return `${API_URL}${path}`;
 }
