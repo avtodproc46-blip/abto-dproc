@@ -1,13 +1,26 @@
 .tests-page h1 {
   margin: 0;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.4rem, 5vw, 2.2rem);
   letter-spacing: -0.03em;
 }
 
 .tests-page__head {
   justify-content: space-between;
+  gap: 0.75rem;
 }
 
 .tests-page__pager {
   justify-content: center;
+  gap: 0.5rem;
+}
+
+.tests-page__pager .ui-btn {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+@media (min-width: 480px) {
+  .tests-page__pager .ui-btn {
+    flex: 0 0 auto;
+  }
 }

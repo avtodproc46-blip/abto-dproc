@@ -29,6 +29,10 @@ body,
   min-height: 100%;
 }
 
+html {
+  overflow-x: clip;
+}
+
 body {
   margin: 0;
   font-family: var(--font);
@@ -38,6 +42,8 @@ body {
     radial-gradient(circle at 88% 0%, rgba(15, 107, 92, 0.18), transparent 32%),
     linear-gradient(160deg, var(--bg), var(--bg-deep));
   background-attachment: fixed;
+  overflow-x: clip;
+  -webkit-text-size-adjust: 100%;
 }
 
 button,

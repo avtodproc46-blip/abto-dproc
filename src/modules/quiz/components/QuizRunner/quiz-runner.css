@@ -1,7 +1,32 @@
 .quiz-runner__bar {
   justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.quiz-runner__bar > .muted {
+  flex: 1 1 100%;
+  font-size: 0.88rem;
+  line-height: 1.35;
 }
 
 .quiz-runner__actions {
   justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.quiz-runner__actions .ui-btn {
+  flex: 1 1 auto;
+  min-width: 0;
+  text-align: center;
+}
+
+@media (min-width: 640px) {
+  .quiz-runner__bar > .muted {
+    flex: 1 1 auto;
+    font-size: inherit;
+  }
+
+  .quiz-runner__actions .ui-btn {
+    flex: 0 0 auto;
+  }
 }

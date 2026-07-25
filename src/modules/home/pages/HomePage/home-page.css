@@ -5,7 +5,7 @@
 }
 
 .home-page__hero {
-  padding: 2rem;
+  padding: 1.25rem;
 }
 
 .home-page__eyebrow {
@@ -19,7 +19,7 @@
 
 .home-page__hero h1 {
   margin: 0.35rem 0 0.7rem;
-  font-size: clamp(2rem, 5vw, 3.2rem);
+  font-size: clamp(1.65rem, 7vw, 3.2rem);
   letter-spacing: -0.04em;
   max-width: 12ch;
 }
@@ -28,9 +28,18 @@
   margin-top: 1.4rem;
 }
 
+.home-page__actions .ui-btn {
+  width: 100%;
+}
+
+.home-page__actions a {
+  display: block;
+  width: 100%;
+}
+
 .home-page__cards {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: 1fr;
   gap: 1rem;
 }
 
@@ -40,4 +49,25 @@
 
 .home-page__cards h3 {
   margin: 0 0 0.45rem;
+}
+
+@media (min-width: 480px) {
+  .home-page__actions .ui-btn,
+  .home-page__actions a {
+    width: auto;
+  }
+
+  .home-page__actions a {
+    display: inline-block;
+  }
+}
+
+@media (min-width: 640px) {
+  .home-page__hero {
+    padding: 2rem;
+  }
+
+  .home-page__cards {
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  }
 }
