@@ -1,7 +1,8 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
-// Local + GitHub user Pages: `/`
+// Local: `/`
+// GitHub Pages project site: `/abto-dproc/`
 const base = process.env.VITE_BASE_PATH || '/'
 
 export default defineConfig({
