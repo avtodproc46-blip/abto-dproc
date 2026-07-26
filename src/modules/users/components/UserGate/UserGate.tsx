@@ -32,7 +32,7 @@ export function UserGate({ onReady }: Props) {
       saveStoredUser(user);
       onReady(user);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Ошибка авторизации');
+      setError(err instanceof Error ? err.message : 'Նույնականացման սխալ');
     } finally {
       setLoading(false);
     }
@@ -40,9 +40,9 @@ export function UserGate({ onReady }: Props) {
 
   return (
     <section className="panel user-gate">
-      <h1>{mode === 'login' ? 'Вход' : 'Регистрация'}</h1>
+      <h1>{mode === 'login' ? 'Մուտք' : 'Գրանցում'}</h1>
       <p className="muted">
-        Логин должен быть уникальным. Пароль — минимум 6 символов.
+        Մուտքանունը պետք է եզակի լինի։ Գաղտնաբառը՝ առնվազն 6 նիշ։
       </p>
 
       <div className="user-gate__tabs">
@@ -54,7 +54,7 @@ export function UserGate({ onReady }: Props) {
             setError('');
           }}
         >
-          Войти
+          Մուտք
         </button>
         <button
           type="button"
@@ -64,7 +64,7 @@ export function UserGate({ onReady }: Props) {
             setError('');
           }}
         >
-          Регистрация
+          Գրանցում
         </button>
       </div>
 
@@ -74,7 +74,7 @@ export function UserGate({ onReady }: Props) {
         <input
           value={login}
           onChange={(e) => setLogin(e.target.value)}
-          placeholder="Логин"
+          placeholder="Մուտքանուն"
           autoComplete="username"
           minLength={3}
           required
@@ -83,7 +83,7 @@ export function UserGate({ onReady }: Props) {
           type="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          placeholder="Пароль"
+          placeholder="Գաղտնաբառ"
           autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
           minLength={6}
           required
@@ -92,8 +92,8 @@ export function UserGate({ onReady }: Props) {
           {loading
             ? '...'
             : mode === 'login'
-              ? 'Войти'
-              : 'Создать аккаунт'}
+              ? 'Մուտք'
+              : 'Ստեղծել հաշիվ'}
         </Button>
       </form>
     </section>

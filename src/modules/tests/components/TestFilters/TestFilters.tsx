@@ -7,10 +7,10 @@ type Props = {
 };
 
 const OPTIONS: Array<{ value: AttemptStatus | 'all'; label: string }> = [
-  { value: 'all', label: 'Все' },
-  { value: 'passed', label: 'Пройденные' },
-  { value: 'failed', label: 'Провалы' },
-  { value: 'not_taken', label: 'Не пройденные' },
+  { value: 'all', label: 'Բոլորը' },
+  { value: 'passed', label: 'Անցած' },
+  { value: 'failed', label: 'Ձախողված' },
+  { value: 'not_taken', label: 'Չանցած' },
 ];
 
 export function TestFilters({ value, onChange }: Props) {

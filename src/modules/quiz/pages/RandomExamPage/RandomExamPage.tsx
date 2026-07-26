@@ -13,19 +13,19 @@ export function RandomExamPage() {
   useEffect(() => {
     fetchRandomExam()
       .then(setSession)
-      .catch(() => setError('Не удалось собрать случайный экзамен'));
+      .catch(() => setError('Չհաջողվեց կազմել պատահական քննությունը'));
   }, []);
 
   if (!user) {
     return (
       <p className="muted">
-        Сначала выбери пользователя на <Link to="/">главной</Link>
+        Նախ մուտք գործիր <Link to="/">գլխավոր էջում</Link>
       </p>
     );
   }
 
   if (error) return <p className="muted">{error}</p>;
-  if (!session) return <p className="muted">Собираем 20 вопросов...</p>;
+  if (!session) return <p className="muted">Կազմում ենք 20 հարց...</p>;
 
   return <QuizRunner session={session} user={user} />;
 }

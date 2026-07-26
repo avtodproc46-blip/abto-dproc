@@ -15,19 +15,19 @@ export function TicketQuizPage() {
     if (!testId) return;
     fetchTicketExam(Number(testId))
       .then(setSession)
-      .catch(() => setError('Не удалось загрузить билет'));
+      .catch(() => setError('Չհաջողվեց բեռնել թեստը'));
   }, [testId]);
 
   if (!user) {
     return (
       <p className="muted">
-        Сначала выбери пользователя на <Link to="/">главной</Link>
+        Նախ մուտք գործիր <Link to="/">գլխավոր էջում</Link>
       </p>
     );
   }
 
   if (error) return <p className="muted">{error}</p>;
-  if (!session) return <p className="muted">Загрузка билета...</p>;
+  if (!session) return <p className="muted">Թեստը բեռնվում է...</p>;
 
   return (
     <QuizRunner session={session} user={user} testId={Number(testId)} />

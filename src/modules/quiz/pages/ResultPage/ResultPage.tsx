@@ -10,9 +10,9 @@ export function ResultPage() {
   if (!result) {
     return (
       <section className="panel result-page">
-        <p>Нет данных результата.</p>
+        <p>Արդյունքի տվյալներ չկան։</p>
         <Link to="/tests">
-          <Button>К билетам</Button>
+          <Button>Դեպի թեստեր</Button>
         </Link>
       </section>
     );

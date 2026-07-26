@@ -30,7 +30,7 @@ export function App() {
         </Link>
         <nav className="row">
           <Link to="/tests">Թեստեր</Link>
-          <Link to="/quiz/random">Random</Link>
+          <Link to="/quiz/random">Պատահական</Link>
         </nav>
       </header>
 

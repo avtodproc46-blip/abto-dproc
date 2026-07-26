@@ -40,7 +40,7 @@ export function TestsPage() {
       })
       .catch(() => {
         if (cancelled) return;
-        setError('Не удалось загрузить тесты');
+        setError('Չհաջողվեց բեռնել թեստերը');
         setItems([]);
         setTotal(0);
       })
@@ -56,7 +56,7 @@ export function TestsPage() {
   if (!user) {
     return (
       <p className="muted">
-        Сначала выбери пользователя на <Link to="/">главной</Link>
+        Նախ մուտք գործիր <Link to="/">գլխավոր էջում</Link>
       </p>
     );
   }
@@ -86,7 +86,7 @@ export function TestsPage() {
       />
 
       {loading ? (
-        <p className="muted">Загрузка...</p>
+        <p className="muted">Բեռնում...</p>
       ) : (
         <div className="grid-tests">
           {items.map((test) => (
@@ -98,7 +98,7 @@ export function TestsPage() {
       {error && <p className="muted">{error}</p>}
 
       {!loading && !error && items.length === 0 && (
-        <p className="muted">По этому фильтру тестов нет.</p>
+        <p className="muted">Այս զտիչով թեստեր չկան։</p>
       )}
 
       <div className="row tests-page__pager">
@@ -107,7 +107,7 @@ export function TestsPage() {
           disabled={page <= 1}
           onClick={() => setPage((p) => p - 1)}
         >
-          Назад
+          Նախորդ
         </Button>
         <span className="muted">
           {page} / {pages}
@@ -117,7 +117,7 @@ export function TestsPage() {
           disabled={page >= pages}
           onClick={() => setPage((p) => p + 1)}
         >
-          Дальше
+          Հաջորդ
         </Button>
       </div>
     </section>
