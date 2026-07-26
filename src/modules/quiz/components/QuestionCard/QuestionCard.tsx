@@ -8,7 +8,6 @@ type Props = {
   total: number;
   question: QuestionModel;
   selectedAnswerId: number | null;
-  correctAnswerId: number | null;
   revealed: boolean;
   onSelect: (answerId: number) => void;
 };
@@ -18,7 +17,6 @@ export function QuestionCard({
   total,
   question,
   selectedAnswerId,
-  correctAnswerId,
   revealed,
   onSelect,
 }: Props) {
@@ -57,7 +55,6 @@ export function QuestionCard({
               compositeAnswerImage ? { ...answer, image: null } : answer
             }
             selected={selectedAnswerId === answer.id}
-            isCorrectAnswer={correctAnswerId === answer.id}
             revealed={revealed}
             onSelect={() => onSelect(answer.id)}
           />

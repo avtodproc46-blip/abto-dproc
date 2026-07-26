@@ -19,11 +19,7 @@ export function QuizRunner({ session, user: _user, testId }: Props) {
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<Record<number, number>>({});
-  const [correctAnswers, setCorrectAnswers] = useState<Record<number, number>>(
-    {},
-  );
   const [revealed, setRevealed] = useState(false);
-  const [checking, setChecking] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(session.timerSeconds);
   const [startedAt] = useState(() => Date.now());
   const [finishing, setFinishing] = useState(false);
@@ -91,20 +87,15 @@ export function QuizRunner({ session, user: _user, testId }: Props) {
     }
   }
 
-  async function onSelect(answerId: number) {
-    if (revealed || checking || !question) return;
-    setChecking(true);
-    try {
-      const result = await checkAnswer(question.id, answerId);
-      setSelected((prev) => ({ ...prev, [question.id]: answerId }));
-      setCorrectAnswers((prev) => ({
-        ...prev,
-        [question.id]: result.correctAnswerId,
-      }));
-      setRevealed(true);
-    } finally {
-      setChecking(false);
-    }
+  function onSelect(answerId: number) {
+    if (revealed || !question) return;
+
+    // Instant UI from session payload (isTrue already on answers).
+    setSelected((prev) => ({ ...prev, [question.id]: answerId }));
+    setRevealed(true);
+
+    // Server check in background — does not block reveal.
+    void checkAnswer(question.id, answerId).catch(() => undefined);
   }
 
   function goNext() {
@@ -137,9 +128,8 @@ export function QuizRunner({ session, user: _user, testId }: Props) {
         total={total}
         question={question}
         selectedAnswerId={selected[question.id] ?? null}
-        correctAnswerId={correctAnswers[question.id] ?? null}
         revealed={revealed}
-        onSelect={(id) => void onSelect(id)}
+        onSelect={onSelect}
       />
 
       <div className="quiz-runner__actions row">
@@ -154,10 +144,7 @@ export function QuizRunner({ session, user: _user, testId }: Props) {
         >
           Նախորդ
         </Button>
-        <Button
-          onClick={goNext}
-          disabled={!selected[question.id] || checking || finishing}
-        >
+        <Button onClick={goNext} disabled={!selected[question.id] || finishing}>
           {index >= total - 1 ? 'Ավարտել թեստը' : 'Հաջորդ'}
         </Button>
       </div>

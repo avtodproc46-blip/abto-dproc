@@ -6,21 +6,14 @@ type Props = {
   answer: AnswerModel;
   selected: boolean;
   revealed: boolean;
-  isCorrectAnswer: boolean;
   onSelect: () => void;
 };
 
-export function AnswerOption({
-  answer,
-  selected,
-  revealed,
-  isCorrectAnswer,
-  onSelect,
-}: Props) {
+export function AnswerOption({ answer, selected, revealed, onSelect }: Props) {
   const image = assetUrl(answer.image);
   let state = '';
   if (revealed) {
-    if (isCorrectAnswer) state = 'is-correct';
+    if (answer.isTrue) state = 'is-correct';
     else if (selected) state = 'is-wrong';
   } else if (selected) {
     state = 'is-selected';
