@@ -26,7 +26,7 @@ export function App() {
       <header className="topbar">
         <Link to="/" className="brand">
           <strong>Avto Dproc</strong>
-          <span>{user.name}</span>
+          <span>{user.login}</span>
         </Link>
         <nav className="row">
           <Link to="/tests">Թեստեր</Link>

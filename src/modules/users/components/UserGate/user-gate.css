@@ -1,6 +1,6 @@
 .user-gate {
   padding: 1.25rem;
-  max-width: 560px;
+  max-width: 420px;
   width: 100%;
   margin: 2rem auto 0;
   box-sizing: border-box;
@@ -14,35 +14,33 @@
   word-wrap: break-word;
 }
 
-.user-gate__list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.6rem;
-  margin: 1.25rem 0;
+.user-gate__tabs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin: 1.1rem 0 0.85rem;
 }
 
-.user-gate__chip {
+.user-gate__tabs button {
   border: 1px solid var(--line);
   background: #fff;
   border-radius: 999px;
-  padding: 0.55rem 0.95rem;
+  padding: 0.55rem 0.75rem;
   cursor: pointer;
   font-weight: 600;
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
 
-.user-gate__chip:hover {
+.user-gate__tabs button.is-active {
   border-color: var(--accent);
   color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 8%, white);
 }
 
 .user-gate__form {
   display: flex;
   flex-direction: column;
   gap: 0.6rem;
-  margin-top: 1rem;
+  margin-top: 0.4rem;
   width: 100%;
 }
 
@@ -64,25 +62,12 @@
 
 .user-gate__error {
   color: var(--fail);
+  margin: 0 0 0.5rem;
 }
 
 @media (min-width: 480px) {
   .user-gate {
     padding: 2rem;
     margin: 4rem auto 0;
-  }
-
-  .user-gate__form {
-    flex-direction: row;
-    align-items: stretch;
-  }
-
-  .user-gate__form input {
-    flex: 1;
-    width: auto;
-  }
-
-  .user-gate__form .ui-btn {
-    width: auto;
   }
 }

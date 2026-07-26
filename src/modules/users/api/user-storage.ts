@@ -1,12 +1,23 @@
+import type { UserModel } from '../types/user-model.type';
+
 const KEY = 'avto-dproc-user';
 
-import type { UserModel } from '../types/user-model.type';
+function isValidUser(value: unknown): value is UserModel {
+  if (!value || typeof value !== 'object') return false;
+  const user = value as Record<string, unknown>;
+  return typeof user.id === 'number' && typeof user.login === 'string';
+}
 
 export function loadStoredUser(): UserModel | null {
   const raw = localStorage.getItem(KEY);
   if (!raw) return null;
   try {
-    return JSON.parse(raw) as UserModel;
+    const parsed = JSON.parse(raw) as unknown;
+    if (!isValidUser(parsed)) {
+      localStorage.removeItem(KEY);
+      return null;
+    }
+    return parsed;
   } catch {
     return null;
   }

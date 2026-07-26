@@ -1,6 +1,6 @@
-import { useEffect, useState, type FormEvent } from 'react';
+import { useState, type FormEvent } from 'react';
 import { Button } from '../../../../shared/ui/Button/Button';
-import { createUser, fetchUsers } from '../../api/users.api';
+import { loginUser, registerUser } from '../../api/users.api';
 import { saveStoredUser } from '../../api/user-storage';
 import type { UserModel } from '../../types/user-model.type';
 import './user-gate.css';
@@ -9,66 +9,92 @@ type Props = {
   onReady: (user: UserModel) => void;
 };
 
+type Mode = 'login' | 'register';
+
 export function UserGate({ onReady }: Props) {
-  const [users, setUsers] = useState<UserModel[]>([]);
-  const [name, setName] = useState('');
-  const [loading, setLoading] = useState(true);
+  const [mode, setMode] = useState<Mode>('login');
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  useEffect(() => {
-    fetchUsers()
-      .then(setUsers)
-      .catch(() => setError('Не удалось загрузить пользователей'))
-      .finally(() => setLoading(false));
-  }, []);
-
-  async function handleCreate(e: FormEvent) {
+  async function handleSubmit(e: FormEvent) {
     e.preventDefault();
-    if (!name.trim()) return;
-    const user = await createUser(name.trim());
-    saveStoredUser(user);
-    onReady(user);
-  }
+    if (!login.trim() || !password) return;
 
-  function pickUser(user: UserModel) {
-    saveStoredUser(user);
-    onReady(user);
+    setLoading(true);
+    setError('');
+    try {
+      const user =
+        mode === 'login'
+          ? await loginUser(login.trim(), password)
+          : await registerUser(login.trim(), password);
+      saveStoredUser(user);
+      onReady(user);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Ошибка авторизации');
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
     <section className="panel user-gate">
-      <h1>Кто проходит тест?</h1>
+      <h1>{mode === 'login' ? 'Вход' : 'Регистрация'}</h1>
       <p className="muted">
-        Выбери пользователя — по нему будем показывать прогресс по билетам.
+        Логин должен быть уникальным. Пароль — минимум 6 символов.
       </p>
 
-      {loading && <p className="muted">Загрузка...</p>}
+      <div className="user-gate__tabs">
+        <button
+          type="button"
+          className={mode === 'login' ? 'is-active' : ''}
+          onClick={() => {
+            setMode('login');
+            setError('');
+          }}
+        >
+          Войти
+        </button>
+        <button
+          type="button"
+          className={mode === 'register' ? 'is-active' : ''}
+          onClick={() => {
+            setMode('register');
+            setError('');
+          }}
+        >
+          Регистрация
+        </button>
+      </div>
+
       {error && <p className="user-gate__error">{error}</p>}
 
-      {!loading && users.length > 0 && (
-        <div className="user-gate__list">
-          {users.map((user) => (
-            <button
-              key={user.id}
-              type="button"
-              className="user-gate__chip"
-              onClick={() => pickUser(user)}
-            >
-              {user.name}
-            </button>
-          ))}
-        </div>
-      )}
-
-      <form className="user-gate__form" onSubmit={handleCreate}>
+      <form className="user-gate__form" onSubmit={handleSubmit}>
         <input
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Новое имя"
-          minLength={2}
+          value={login}
+          onChange={(e) => setLogin(e.target.value)}
+          placeholder="Логин"
+          autoComplete="username"
+          minLength={3}
           required
         />
-        <Button type="submit">Войти</Button>
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Пароль"
+          autoComplete={mode === 'login' ? 'current-password' : 'new-password'}
+          minLength={6}
+          required
+        />
+        <Button type="submit" disabled={loading}>
+          {loading
+            ? '...'
+            : mode === 'login'
+              ? 'Войти'
+              : 'Создать аккаунт'}
+        </Button>
       </form>
     </section>
   );

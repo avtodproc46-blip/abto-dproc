@@ -16,7 +16,7 @@ export function HomePage({ user, onLogout }: Props) {
         <p className="home-page__eyebrow">Avto Dproc</p>
         <h1>Վարորդական թեստեր</h1>
         <p className="muted">
-          Բարև, <strong>{user.name}</strong>. Ընտրիր ռեժիմը՝ սովորական բիլետ կամ
+          Բարև, <strong>{user.login}</strong>. Ընտրիր ռեժիմը՝ սովորական բիլետ կամ
           պատահական քննություն։ Ժամանակը՝ 20 րոպե, անցում՝ 18/20։
         </p>
         <div className="home-page__actions row">
@@ -33,7 +33,7 @@ export function HomePage({ user, onLogout }: Props) {
               onLogout();
             }}
           >
-            Փոխել օգտատեր
+            Փոխել օգտատեր / դուրս գալ
           </Button>
         </div>
       </div>

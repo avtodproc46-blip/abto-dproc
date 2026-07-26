@@ -15,7 +15,15 @@ export async function apiPost<T>(path: string, body: unknown): Promise<T> {
     body: JSON.stringify(body),
   });
   if (!res.ok) {
-    throw new Error(`POST ${path} failed: ${res.status}`);
+    let message = `POST ${path} failed: ${res.status}`;
+    try {
+      const data = (await res.json()) as { message?: string | string[] };
+      if (Array.isArray(data.message)) message = data.message.join(', ');
+      else if (typeof data.message === 'string') message = data.message;
+    } catch {
+      // keep default message
+    }
+    throw new Error(message);
   }
   return res.json() as Promise<T>;
 }

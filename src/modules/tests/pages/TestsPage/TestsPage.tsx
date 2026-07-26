@@ -19,7 +19,7 @@ export function TestsPage() {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const take = 24;
+  const take = 10;
 
   useEffect(() => {
     if (!user) return;
