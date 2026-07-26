@@ -2,7 +2,6 @@ export type AnswerModel = {
   id: number;
   title: string;
   image?: string | null;
-  isTrue: boolean;
 };
 
 export type QuestionModel = {

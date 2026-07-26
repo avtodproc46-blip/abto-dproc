@@ -8,6 +8,7 @@ type Props = {
   total: number;
   question: QuestionModel;
   selectedAnswerId: number | null;
+  correctAnswerId: number | null;
   revealed: boolean;
   onSelect: (answerId: number) => void;
 };
@@ -17,6 +18,7 @@ export function QuestionCard({
   total,
   question,
   selectedAnswerId,
+  correctAnswerId,
   revealed,
   onSelect,
 }: Props) {
@@ -38,7 +40,15 @@ export function QuestionCard({
         Հարց {index + 1} / {total}
       </div>
       <h2>{question.title}</h2>
-      {image && <img className="question-card__image" src={image} alt="" />}
+      {image && (
+        <img
+          className="question-card__image"
+          src={image}
+          alt=""
+          loading="lazy"
+          decoding="async"
+        />
+      )}
       <div className="question-card__answers">
         {question.answers.map((answer) => (
           <AnswerOption
@@ -47,6 +57,7 @@ export function QuestionCard({
               compositeAnswerImage ? { ...answer, image: null } : answer
             }
             selected={selectedAnswerId === answer.id}
+            isCorrectAnswer={correctAnswerId === answer.id}
             revealed={revealed}
             onSelect={() => onSelect(answer.id)}
           />

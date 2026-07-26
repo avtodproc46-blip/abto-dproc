@@ -29,7 +29,6 @@ export function TestsPage() {
     setError('');
 
     fetchTests({
-      userId: user.id,
       status,
       page,
       take,

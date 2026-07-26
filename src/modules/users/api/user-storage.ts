@@ -5,7 +5,11 @@ const KEY = 'avto-dproc-user';
 function isValidUser(value: unknown): value is UserModel {
   if (!value || typeof value !== 'object') return false;
   const user = value as Record<string, unknown>;
-  return typeof user.id === 'number' && typeof user.login === 'string';
+  return (
+    typeof user.id === 'number' &&
+    typeof user.login === 'string' &&
+    typeof user.accessToken === 'string'
+  );
 }
 
 export function loadStoredUser(): UserModel | null {
@@ -29,4 +33,8 @@ export function saveStoredUser(user: UserModel) {
 
 export function clearStoredUser() {
   localStorage.removeItem(KEY);
+}
+
+export function getAccessToken(): string | null {
+  return loadStoredUser()?.accessToken ?? null;
 }

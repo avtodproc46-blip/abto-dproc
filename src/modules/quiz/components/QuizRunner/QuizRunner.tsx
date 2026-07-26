@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../../../../shared/ui/Button/Button';
 import { createAttempt } from '../../api/attempts.api';
+import { checkAnswer } from '../../../exams/api/exams.api';
 import { QuestionCard } from '../QuestionCard/QuestionCard';
 import { QuizTimer } from '../QuizTimer/QuizTimer';
 import type { ExamSessionModel, QuizResultModel } from '../../types/quiz-model.type';
@@ -14,11 +15,15 @@ type Props = {
   testId?: number;
 };
 
-export function QuizRunner({ session, user, testId }: Props) {
+export function QuizRunner({ session, user: _user, testId }: Props) {
   const navigate = useNavigate();
   const [index, setIndex] = useState(0);
   const [selected, setSelected] = useState<Record<number, number>>({});
+  const [correctAnswers, setCorrectAnswers] = useState<Record<number, number>>(
+    {},
+  );
   const [revealed, setRevealed] = useState(false);
+  const [checking, setChecking] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(session.timerSeconds);
   const [startedAt] = useState(() => Date.now());
   const [finishing, setFinishing] = useState(false);
@@ -55,42 +60,51 @@ export function QuizRunner({ session, user, testId }: Props) {
     if (finishing) return;
     setFinishing(true);
 
-    let correctCount = 0;
-    for (const q of session.question) {
-      const answerId = selected[q.id];
-      const answer = q.answers.find((a) => a.id === answerId);
-      if (answer?.isTrue) correctCount += 1;
-    }
-
     const durationSeconds = Math.round((Date.now() - startedAt) / 1000);
-    const isPassed = correctCount >= session.passScore;
+    const questionIds = session.question.map((q) => q.id);
+    const answers = Object.entries(selected).map(([questionId, answerId]) => ({
+      questionId: Number(questionId),
+      answerId,
+    }));
 
-    await createAttempt({
-      userId: user.id,
-      testId,
-      mode: session.mode,
-      correctCount,
-      totalCount: total,
-      isPassed,
-      durationSeconds,
-    });
+    try {
+      const attempt = await createAttempt({
+        testId,
+        mode: session.mode,
+        questionIds,
+        answers,
+        durationSeconds,
+      });
 
-    const result: QuizResultModel = {
-      correctCount,
-      totalCount: total,
-      isPassed,
-      mode: session.mode,
-      testId,
-      durationSeconds,
-    };
+      const result: QuizResultModel = {
+        correctCount: attempt.correctCount,
+        totalCount: attempt.totalCount,
+        isPassed: attempt.isPassed,
+        mode: session.mode,
+        testId,
+        durationSeconds,
+      };
 
-    navigate('/quiz/result', { state: result, replace: true });
+      navigate('/quiz/result', { state: result, replace: true });
+    } catch {
+      setFinishing(false);
+    }
   }
 
-  function onSelect(answerId: number) {
-    if (revealed || !question) return;
-    setSelected((prev) => ({ ...prev, [question.id]: answerId }));
-    setRevealed(true);
+  async function onSelect(answerId: number) {
+    if (revealed || checking || !question) return;
+    setChecking(true);
+    try {
+      const result = await checkAnswer(question.id, answerId);
+      setSelected((prev) => ({ ...prev, [question.id]: answerId }));
+      setCorrectAnswers((prev) => ({
+        ...prev,
+        [question.id]: result.correctAnswerId,
+      }));
+      setRevealed(true);
+    } finally {
+      setChecking(false);
+    }
   }
 
   function goNext() {
@@ -98,8 +112,9 @@ export function QuizRunner({ session, user, testId }: Props) {
       void finishQuiz();
       return;
     }
-    setIndex((i) => i + 1);
-    setRevealed(false);
+    const nextIndex = index + 1;
+    setIndex(nextIndex);
+    setRevealed(Boolean(selected[session.question[nextIndex]?.id]));
   }
 
   if (!question) return null;
@@ -112,7 +127,7 @@ export function QuizRunner({ session, user, testId }: Props) {
           Պատասխանված՝ {answeredCount}/{total} · անցում՝ {session.passScore}/
           {total}
         </span>
-        <Button variant="ghost" onClick={() => void finishQuiz()}>
+        <Button variant="ghost" onClick={() => void finishQuiz()} disabled={finishing}>
           Ավարտել
         </Button>
       </div>
@@ -122,8 +137,9 @@ export function QuizRunner({ session, user, testId }: Props) {
         total={total}
         question={question}
         selectedAnswerId={selected[question.id] ?? null}
+        correctAnswerId={correctAnswers[question.id] ?? null}
         revealed={revealed}
-        onSelect={onSelect}
+        onSelect={(id) => void onSelect(id)}
       />
 
       <div className="quiz-runner__actions row">
@@ -131,13 +147,17 @@ export function QuizRunner({ session, user, testId }: Props) {
           variant="ghost"
           disabled={index === 0}
           onClick={() => {
-            setIndex((i) => Math.max(0, i - 1));
-            setRevealed(Boolean(selected[session.question[index - 1]?.id]));
+            const prevIndex = Math.max(0, index - 1);
+            setIndex(prevIndex);
+            setRevealed(Boolean(selected[session.question[prevIndex]?.id]));
           }}
         >
           Նախորդ
         </Button>
-        <Button onClick={goNext} disabled={!selected[question.id]}>
+        <Button
+          onClick={goNext}
+          disabled={!selected[question.id] || checking || finishing}
+        >
           {index >= total - 1 ? 'Ավարտել թեստը' : 'Հաջորդ'}
         </Button>
       </div>
